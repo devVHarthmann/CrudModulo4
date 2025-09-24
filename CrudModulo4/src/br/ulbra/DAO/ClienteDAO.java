@@ -33,7 +33,7 @@ public class ClienteDAO extends AbstractDAO implements CrudRepository<Cliente> {
             if (affected == 0) {
                 throw new SQLException("Falha ao inserir cliente.");
             }else{
-                JOptionPane.showMessageDialog(null, "EStou aqui");
+                
             }
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {

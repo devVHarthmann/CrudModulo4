@@ -5,6 +5,10 @@
  */
 package br.ulbra.view;
 
+import br.ulbra.controller.UsuarioController;
+import br.ulbra.model.Usuario;
+import java.util.HashSet;
+
 /**
  *
  * @author aluno.saolucas
@@ -12,10 +16,70 @@ package br.ulbra.view;
 public class UsuarioView extends javax.swing.JFrame {
 
     /**
-     * Creates new form UsuarioView
+     * Creates new form Usuario
      */
     public UsuarioView() {
         initComponents();
+        controller = new UsuarioController();
+        this.setLocationRelativeTo(null);
+        initTableModel();
+        atualizarTabela();
+        setBotoes(0);
+    }
+
+    private void initTableModel() {
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{"ID", "Login", "Nome", "Ativo"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
+        };
+        tbUsuario.setModel(model);
+
+    }
+    private UsuarioController controller;
+
+    private void atualizarTabela() {
+        try {
+            javax.swing.table.DefaultTableModel modelTbl = (javax.swing.table.DefaultTableModel) tbUsuario.getModel();
+            modelTbl.setRowCount(0);
+            java.util.List<Usuario> lista = controller.listar();
+            for (Usuario u : lista) {
+                modelTbl.addRow(new Object[]{u.getId(), u.getNome(), u.getLogin(), u.isAtivo()});
+            }
+        } catch (Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro ao listar: " + ex.getMessage());
+        }
+    }
+
+    public void setBotoes(int op) {
+        switch (op) {
+            case 1:
+                btnSalvar.setEnabled(false);
+                btnAlterar.setEnabled(true);
+                btnExcluir.setEnabled(true);
+                btnListar.setEnabled(true);
+                btnLimpar.setEnabled(true);
+                break;
+            default:
+                btnSalvar.setEnabled(true);
+                btnAlterar.setEnabled(false);
+                btnExcluir.setEnabled(false);
+                btnListar.setEnabled(false);
+                btnLimpar.setEnabled(false);
+
+        }
+    }
+
+    public void limparCampos() {
+        txtNome.setText(null);
+        txtCod.setText(null);
+        txtLogin.setText(null);
+        txtSenha.setText(null);
+        txtAtivo.setSelected(false);
     }
 
     /**
@@ -27,21 +91,320 @@ public class UsuarioView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPasswordField1 = new javax.swing.JPasswordField();
+        jPasswordField2 = new javax.swing.JPasswordField();
+        jPanel1 = new javax.swing.JPanel();
+        idUsuario = new javax.swing.JLabel();
+        NomeUsuario = new javax.swing.JLabel();
+        loginUsuario = new javax.swing.JLabel();
+        senhaUsuario = new javax.swing.JLabel();
+        ativo = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbUsuario = new javax.swing.JTable();
+        btnSalvar = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnListar = new javax.swing.JButton();
+        btnLimpar = new javax.swing.JButton();
+        txtCod = new javax.swing.JTextField();
+        txtNome = new javax.swing.JTextField();
+        txtLogin = new javax.swing.JTextField();
+        txtAtivo = new javax.swing.JCheckBox();
+        txtSenha = new javax.swing.JPasswordField();
+
+        jPasswordField1.setText("jPasswordField1");
+
+        jPasswordField2.setText("jPasswordField2");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(0, 102, 102));
+
+        idUsuario.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        idUsuario.setText("ID");
+
+        NomeUsuario.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        NomeUsuario.setText("Nome");
+
+        loginUsuario.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        loginUsuario.setText("Login");
+
+        senhaUsuario.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        senhaUsuario.setText("Senha");
+
+        ativo.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        ativo.setText("Ativo");
+
+        tbUsuario.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "Login", "Nome", "Ativo"
+            }
+        ));
+        tbUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbUsuarioMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbUsuario);
+
+        btnSalvar.setBackground(new java.awt.Color(0, 102, 102));
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+
+        btnAlterar.setBackground(new java.awt.Color(0, 102, 102));
+        btnAlterar.setText("Alternar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setBackground(new java.awt.Color(0, 102, 102));
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
+        btnListar.setBackground(new java.awt.Color(0, 102, 102));
+        btnListar.setText("Listar");
+        btnListar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListarActionPerformed(evt);
+            }
+        });
+
+        btnLimpar.setBackground(new java.awt.Color(0, 102, 102));
+        btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
+
+        txtCod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodActionPerformed(evt);
+            }
+        });
+
+        txtAtivo.setBackground(new java.awt.Color(0, 102, 102));
+        txtAtivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAtivoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(loginUsuario)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtLogin))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(NomeUsuario)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(idUsuario)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(56, 56, 56)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 613, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(senhaUsuario)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(107, 107, 107)
+                                        .addComponent(txtAtivo)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ativo))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(271, 271, 271)
+                        .addComponent(btnListar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(112, 112, 112)
+                        .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(175, 175, 175)
+                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(104, 104, 104)
+                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(111, 111, 111)
+                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(123, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(idUsuario)
+                    .addComponent(txtCod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(NomeUsuario)
+                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(loginUsuario)
+                    .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(senhaUsuario)
+                    .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtAtivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ativo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(50, 50, 50)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnListar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(49, 49, 49))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        try {
+            int id = Integer.parseInt(txtCod.getText());
+            int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Remover Usuario ID " + id + "?", "Confirma", javax.swing.JOptionPane.YES_NO_OPTION);
+            if (confirm != javax.swing.JOptionPane.YES_OPTION) {
+                return;
+            }
+            controller.remover(id);
+            javax.swing.JOptionPane.showMessageDialog(this, "Removido");
+            atualizarTabela();
+            limparCampos();
+        } catch (NumberFormatException nfe) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Selecione um usuário para remover");
+        } catch (Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro ao remover: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        try {
+            int id = Integer.parseInt(txtCod.getText());
+            String nome = txtNome.getText().trim();
+            String login = txtLogin.getText().trim();
+            boolean ativo = false;
+            if (txtAtivo.isSelected()) {
+                ativo = true;
+            }
+
+            Usuario u = new Usuario(id, login, nome, ativo);
+            controller.atualizar(u);
+            javax.swing.JOptionPane.showMessageDialog(this, "Atualizado com sucesso");
+            atualizarTabela();
+            limparCampos();
+        } catch (NumberFormatException nfe) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Selecione um Usuario para atualizar");
+        } catch (Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro ao atualizar: " + ex.getMessage());
+        }
+
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        try {
+            boolean ativo = false;
+            String login = txtLogin.getText().trim();
+            String senha = txtSenha.getText().trim();
+            String nome = txtNome.getText().trim();
+            if (txtAtivo.isSelected()) {
+                ativo = true;
+            }
+            if (nome.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Nome é obrigatório");
+                return;
+            }
+            Usuario u = new Usuario(0, nome, login, senha, ativo);
+            controller.salvar(u);
+             javax.swing.JOptionPane.showMessageDialog(this, "Atualizado com sucesso");
+            atualizarTabela();
+            limparCampos();
+            javax.swing.JOptionPane.showMessageDialog(this, "Cliente salvo (ID=" + u.getId() + ")");
+            //atualizarTabela();
+            // limparCampos();
+        } catch (Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro ao salvar: " + ex.getMessage());
+
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void txtCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodActionPerformed
+
+    private void txtAtivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAtivoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAtivoActionPerformed
+
+    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
+        atualizarTabela();
+    }//GEN-LAST:event_btnListarActionPerformed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        limparCampos();
+        setBotoes(0);
+    }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void tbUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUsuarioMouseClicked
+         int row = tbUsuario.getSelectedRow();
+        if (row >= 0) {
+            txtCod.setText(tbUsuario.getValueAt(row, 0).toString());
+            txtLogin.setText(tbUsuario.getValueAt(row, 2).toString());
+            txtNome.setText(tbUsuario.getValueAt(row, 1) != null ? tbUsuario.getValueAt(row, 1).toString() : "");
+
+            Boolean ativo = (Boolean) tbUsuario.getValueAt(row, 3);
+            txtAtivo.setSelected(ativo != null && ativo); // evita NullPointer
+        }
+
+        setBotoes(1);
+    }//GEN-LAST:event_tbUsuarioMouseClicked
 
     /**
      * @param args the command line arguments
@@ -69,6 +432,7 @@ public class UsuarioView extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(UsuarioView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -79,5 +443,25 @@ public class UsuarioView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel NomeUsuario;
+    private javax.swing.JLabel ativo;
+    private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnLimpar;
+    private javax.swing.JButton btnListar;
+    private javax.swing.JButton btnSalvar;
+    private javax.swing.JLabel idUsuario;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JPasswordField jPasswordField2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel loginUsuario;
+    private javax.swing.JLabel senhaUsuario;
+    private javax.swing.JTable tbUsuario;
+    private javax.swing.JCheckBox txtAtivo;
+    private javax.swing.JTextField txtCod;
+    private javax.swing.JTextField txtLogin;
+    private javax.swing.JTextField txtNome;
+    private javax.swing.JPasswordField txtSenha;
     // End of variables declaration//GEN-END:variables
 }
